@@ -24,3 +24,4 @@ class DifficultyLevelTest {
         assertTrue(hardWord.length() >= DifficultyLevel.HARD.getMinWordLength());
     }
 }
+
