@@ -205,3 +205,4 @@ public class WordGenerator {
         return WORDS_DIRECTORY_PATH;
     }
 }
+
