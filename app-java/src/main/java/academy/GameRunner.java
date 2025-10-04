@@ -20,7 +20,7 @@ public class GameRunner {
         if (args.length == 2) {
             runTestMode(args[0], args[1]);
         } else if (args.length == 0) {
-            runInteractiveModeMenu();
+            runInteractiveMode();
         } else {
             System.out.println("Неверное количество аргументов.");
             System.out.println("Использование:");
