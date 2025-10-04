@@ -17,11 +17,23 @@ public class GameRunner {
     }
 
     public void run(String[] args) {
+        if (args.length == 2) {
+            runTestMode(args[0], args[1]);
+        } else if (args.length == 0) {
+            runInteractiveModeMenu();
+        } else {
+            System.out.println("Неверное количество аргументов.");
+            System.out.println("Использование:");
+            System.out.println("java -jar hangman.jar              # интерактивный режим");
+            System.out.println("java -jar hangman.jar кот ко       # тестовый режим");
+        }
+    }
+
+    private void runInteractiveModeMenu() {
         System.out.println("Выберите режим игры:");
         System.out.println("1. Компьютер загадывает слово");
-        System.out.println("2. Тестовый режим (секретное слово + уже угаданные буквы)");
-        System.out.println("3. Вы сами загадываете слово, а программа/друг угадывает");
-        System.out.print("Введите 1, 2 или 3: ");
+        System.out.println("2. Вы сами загадываете слово");
+        System.out.print("Введите 1 или 2: ");
 
         String choice = scanner.nextLine().trim();
         switch (choice) {
@@ -29,13 +41,6 @@ public class GameRunner {
                 runInteractiveMode();
                 break;
             case "2":
-                System.out.print("Введите секретное слово: ");
-                String secret = scanner.nextLine();
-                System.out.print("Введите уже угаданные буквы: ");
-                String guessed = scanner.nextLine();
-                runTestMode(secret, guessed);
-                break;
-            case "3":
                 runUserWordMode();
                 break;
             default:
@@ -102,6 +107,7 @@ public class GameRunner {
             String input = scanner.nextLine().trim().toLowerCase();
             if (input.length() != 1) {
                 System.out.println("Введите только одну букву!");
+                continue;
             }
 
             char guess = input.charAt(0);
@@ -120,7 +126,6 @@ public class GameRunner {
             HangmanDisplay.printHangman(session.getAttemptsLeft(), session.getMaxAttempts());
             System.out.println("Вы проиграли, слово было: " + session.getSecretWord());
         }
-        // TODO:
     }
 
     private DifficultyLevel chooseDifficulty() {
