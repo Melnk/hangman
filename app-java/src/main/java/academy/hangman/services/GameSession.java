@@ -69,6 +69,6 @@ public class GameSession {
     }
 
     public boolean isLost() {
-        return attemptsLeft > 0;
+        return attemptsLeft == 0;
     }
 }

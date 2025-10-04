@@ -3,6 +3,7 @@ package academy;
 import academy.hangman.models.DifficultyLevel;
 import academy.hangman.services.GameSession;
 import academy.hangman.services.WordGenerator;
+import academy.hangman.ui.HangmanDisplay;
 import java.util.Scanner;
 
 public class GameRunner {
@@ -30,6 +31,33 @@ public class GameRunner {
         GameSession session = new GameSession(secretWord, difficultyLevel.getMaxAttempts());
         System.out.println("\nИгра началась! Слово загадано. Сосал?\n");
 
+        while (!session.isLost() && !session.isWon()){
+            HangmanDisplay.printHangman(session.getAttemptsLeft(), session.getMaxAttempts());
+            System.out.println("Слово: " + session.getCurrentMaskedWord());
+            System.out.println("Осталось попыток: " + session.getAttemptsLeft());
+            System.out.println("Введите букву: ");
+
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.length() != 1) {
+                System.out.println("Введите только одну букву!");
+            }
+
+            char guess = input.charAt(0);
+            boolean correct = session.guessLetter(guess);
+
+            if (correct) {
+                System.out.println("Верно");
+            } else {
+                System.out.println("Не угадал");
+            }
+        }
+
+        if (session.isWon()) {
+            System.out.println("Поздравляем вы отгодали слово: " + session.getSecretWord());
+        } else {
+            HangmanDisplay.printHangman(session.getAttemptsLeft(), session.getMaxAttempts());
+            System.out.println("Вы проиграли, слово было: " + session.getSecretWord());
+        }
         // TODO:
     }
 
