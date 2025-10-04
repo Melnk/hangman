@@ -17,12 +17,74 @@ public class GameRunner {
     }
 
     public void run(String[] args) {
-        if (args.length == 2) {
-            runTestMode(args[0], args[1]);
-        } else {
-            runInteractiveMode();
+        System.out.println("Выберите режим игры:");
+        System.out.println("1. Компьютер загадывает слово");
+        System.out.println("2. Тестовый режим (секретное слово + уже угаданные буквы)");
+        System.out.println("3. Вы сами загадываете слово, а программа/друг угадывает");
+        System.out.print("Введите 1, 2 или 3: ");
+
+        String choice = scanner.nextLine().trim();
+        switch (choice) {
+            case "1":
+                runInteractiveMode();
+                break;
+            case "2":
+                System.out.print("Введите секретное слово: ");
+                String secret = scanner.nextLine();
+                System.out.print("Введите уже угаданные буквы: ");
+                String guessed = scanner.nextLine();
+                runTestMode(secret, guessed);
+                break;
+            case "3":
+                runUserWordMode();
+                break;
+            default:
+                System.out.println("Неверный выбор. Запускаем обычный режим.");
+                runInteractiveMode();
         }
     }
+
+    private void runUserWordMode() {
+        System.out.println("Введите слово, которое нужно загадать: ");
+        String secretWord = scanner.nextLine().trim().toLowerCase();
+
+        for (int i = 0; i < 50; i++) System.out.println();
+
+        DifficultyLevel difficultyLevel = chooseDifficulty();
+
+        GameSession session = new GameSession(secretWord, difficultyLevel.getMaxAttempts());
+        System.out.println("\nСлово загадано! Начинаем игру.\n");
+
+        while (!session.isLost() && !session.isWon()) {
+            HangmanDisplay.printHangman(session.getAttemptsLeft(), session.getMaxAttempts());
+            System.out.println("Слово: " + session.getCurrentMaskedWord());
+            System.out.println("Осталось попыток: " + session.getAttemptsLeft());
+            System.out.print("Введите букву: ");
+
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.length() != 1) {
+                System.out.println("Введите только одну букву!");
+                continue;
+            }
+
+            char guess = input.charAt(0);
+            boolean correct = session.guessLetter(guess);
+
+            if (correct) {
+                System.out.println("Верно!");
+            } else {
+                System.out.println("Не угадал!");
+            }
+        }
+
+        if (session.isWon()) {
+            System.out.println("Поздравляем! Вы угадали слово: " + session.getSecretWord());
+        } else {
+            HangmanDisplay.printHangman(session.getAttemptsLeft(), session.getMaxAttempts());
+            System.out.println("Вы проиграли. Слово было: " + session.getSecretWord());
+        }
+    }
+
 
     private void runInteractiveMode() {
         DifficultyLevel difficultyLevel = chooseDifficulty();
