@@ -18,7 +18,8 @@ public class WordGenerator {
     private final Map<String, List<String>> categories;
     private final Map<DifficultyLevel, List<String>> wordsByDifficulty;
     private final Random random;
-    private final Path WORDS_DIRECTORY_PATH = Paths.get("src", "main", "resources", "words");
+    private final Path WORDS_DIRECTORY_PATH = Paths.get("app-java","src", "main", "resources", "words");
+    // C:\Users\melni\Desktop\project\hangman\hw1-hangman\app-java\src\main\resources\words
 
     public WordGenerator() {
         this.categories = loadCategories();
@@ -29,7 +30,8 @@ public class WordGenerator {
     private Map<String, List<String>> loadCategories() {
         Map<String, List<String>> loadedCategories = new HashMap<>();
 
-        if (Files.exists(WORDS_DIRECTORY_PATH)) {
+        System.out.println("Ищем папку по пути: " + WORDS_DIRECTORY_PATH.toAbsolutePath());
+        if (!Files.exists(WORDS_DIRECTORY_PATH)) {
             System.err.println("Заданная папка не найдена: " + WORDS_DIRECTORY_PATH);
             return backupDictionary();
         }
